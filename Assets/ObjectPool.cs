@@ -7,6 +7,7 @@ public class ObjectPool : MonoBehaviour {
 
     private List<PoolingObject> poolList = new List<PoolingObject>();
     [SerializeField] private PoolingObject poolObjectPref = null;
+    [SerializeField] private Transform poolParentTransform = null;
 
 	public GameObject GetObject()
     {
@@ -28,7 +29,7 @@ public class ObjectPool : MonoBehaviour {
     
     private PoolingObject CreateNewInstance()
     {
-        PoolingObject newObj = Instantiate(poolObjectPref, this.transform);
+        PoolingObject newObj = Instantiate(poolObjectPref, poolParentTransform);
         newObj.name = poolObjectPref.name + (poolList.Count + 1);
         //newObj.Initialize();
         return newObj;

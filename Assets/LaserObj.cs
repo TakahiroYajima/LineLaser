@@ -24,6 +24,8 @@ public class LaserObj : PoolingObject {
 
     int debugCount = 0;
 
+    const float destroyDirection = 15f;
+
     /// <summary>
     /// 初期化
     /// </summary>
@@ -65,8 +67,8 @@ public class LaserObj : PoolingObject {
                 line_renderer.SetPosition(0, transform.position);
                 line_renderer.SetPosition(1, lineEndPosition);
             }
-            if(transform.position.x > 15f || transform.position.y > 15f ||
-                transform.position.x < -15f || transform.position.y < -15f)
+            if(transform.position.x > destroyDirection || transform.position.y > destroyDirection ||
+                transform.position.x < -destroyDirection || transform.position.y < -destroyDirection)
             {
                 debugCount = 0;
                 isSetDirectionEnd = false;
@@ -113,13 +115,23 @@ public class LaserObj : PoolingObject {
         boxCollider.transform.position = midPoint;
 
         float angle = (Mathf.Abs(transform.position.y - lineEndPosition.y) / Mathf.Abs(transform.position.x - lineEndPosition.x));
+        //if ((transform.position.y < lineEndPosition.y && transform.position.x > lineEndPosition.x) ||
+        //    (lineEndPosition.y < transform.position.y && lineEndPosition.x > transform.position.x))
+        //{
+        //    angle *= -1;
+        //}
+        angle = Mathf.Rad2Deg * Mathf.Atan(angle);
+        //if (transform.position.y > lineEndPosition.y)
+        //{
+        //    angle *= -1;
+        //}
         if ((transform.position.y < lineEndPosition.y && transform.position.x > lineEndPosition.x) ||
             (lineEndPosition.y < transform.position.y && lineEndPosition.x > transform.position.x))
         {
             angle *= -1;
         }
-        angle = Mathf.Rad2Deg * Mathf.Atan(angle);
-        boxCollider.transform.Rotate(0f, 0f, angle);
+        //boxCollider.transform.Rotate(0f, 0f, angle);
+        boxCollider.transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
     public void CollisionAction(Collision collision)
